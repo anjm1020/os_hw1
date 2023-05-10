@@ -135,9 +135,8 @@ void ku_proc_init(int nprocs, char *flist) {
     plist_head = malloc(sizeof(struct pcblist_entry));
     plist_head->data = NULL;
     plist_head->next = NULL;
-    while (fgets(line, 1024, fd) != NULL) {
-        if (line[strlen(line) - 1] == '\n') line[strlen(line) - 1] = '\0';
-
+    for (int i = 0; i < nprocs; i++) {
+        if (fgets(line, 1024, fd) == NULL) exit(1);
         proc_fd = fopen(line, "r");
         pte = 0 << (PTE_LEN - 1);
         pgtb = malloc(sizeof(pte) * NUMBER_OF_PTE);
@@ -160,6 +159,31 @@ void ku_proc_init(int nprocs, char *flist) {
         curr->next->data = newPcb;
         curr->next->next = NULL;
     }
+    // while (fgets(line, 1024, fd) != NULL) {
+    //     if (line[strlen(line) - 1] == '\n') line[strlen(line) - 1] = '\0';
+
+    //     proc_fd = fopen(line, "r");
+    //     pte = 0 << (PTE_LEN - 1);
+    //     pgtb = malloc(sizeof(pte) * NUMBER_OF_PTE);
+
+    //     for (int i = 0; i < NUMBER_OF_PTE; i++)
+    //         pgtb[i] = pte;
+    //     newPcb = malloc(sizeof(struct pcb));
+    //     newPcb->pid = pid++;
+    //     newPcb->fd = proc_fd;
+    //     newPcb->pgtable = pgtb;
+
+    //     curr = plist_head;
+    //     if (!curr->data) {
+    //         curr->data = newPcb;
+    //         continue;
+    //     }
+
+    //     while (curr->next) curr = curr->next;
+    //     curr->next = malloc(sizeof(struct pcblist_entry));
+    //     curr->next->data = newPcb;
+    //     curr->next->next = NULL;
+    // }
 
     current = plist_head->data;
     ptbr = current->pgtable;
