@@ -135,8 +135,10 @@ void ku_proc_init(int nprocs, char *flist) {
     plist_head = malloc(sizeof(struct pcblist_entry));
     plist_head->data = NULL;
     plist_head->next = NULL;
+
     for (int i = 0; i < nprocs; i++) {
         if (fgets(line, 1024, fd) == NULL) exit(1);
+        if (line[strlen(line) - 1] == '\n') line[strlen(line) - 1] = '\0';
         proc_fd = fopen(line, "r");
         pte = 0 << (PTE_LEN - 1);
         pgtb = malloc(sizeof(pte) * NUMBER_OF_PTE);
